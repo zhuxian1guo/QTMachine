@@ -10,14 +10,14 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    // countdown s;
+    // countdown s;  //计时器
     // s.show();
 
-    // Lottery s1;
+    // Lottery s1; //彩票抽奖
     // s1.show();
 
-    // Calculator s2;
-    // s2.show();
+    Calculator s2;  //计算器
+    s2.show();
 
     return a.exec();
 }

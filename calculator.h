@@ -14,6 +14,14 @@ class Calculator : public QWidget
 public:
     explicit Calculator(QWidget *parent = nullptr);
     ~Calculator();
+    //QString  calculate();
+
+public:
+    double Du1;
+    bool isDivid;
+    bool isadd;
+    bool ismuti;
+    bool issubs;
 
 private:
     Ui::Calculator *ui;
