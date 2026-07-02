@@ -3,62 +3,101 @@
 #include "ui_calculator.h"
 #include <QGridLayout>
 #include <QPushButton>
+#include <QtMath>
 
-// function declaration
-// 声明
-static double calculate(QString str);
-
-// 定义（在文件底部或任何位置）
-// static double calculate(QString str) {
-//     // 解析字符串并计算
-//     return 0.0;
-// }
-
-// transfer the string to the calculated result
-//https://blog.csdn.net/be_quiet_endeavor/article/details/78847565
-//
-static double calculate(QString str)
+// 递归计算四则运算字符串（不支持括号）
+// 思路：先找低优先级运算符(+/-)拆分，再找高优先级(*/)
+// - 和 / 必须用“全部拆分”以保证左结合；
+// + 和 * 用“首次出现拆分 + 递归”即可（满足结合律）。
+static double calculate(const QString &str)
 {
-    if (str.indexOf("+") != -1)
-    {
-        int i = str.indexOf("+");
-        return calculate(str.left(i)) + calculate(str.right(str.length() - 1 - i));
-    }
+    QString s = str.trimmed();
+    if (s.isEmpty())
+        return 0.0;
 
-    if (str.indexOf("-") != -1)
-    {
-        QStringList list = str.split('-');
-        double value = calculate(list[0]);
-        if (str.at(0) == "-")
-            value = -value;
-        for (int i = 1; i < list.count(); ++i)
-        {
-            value -= calculate(list[i]);
+    // 处理前导正负号，例如 "-2+3"、"+5"
+    bool negative = false;
+    while (s.size() >= 1 && (s.at(0) == QLatin1Char('-') || s.at(0) == QLatin1Char('+'))) {
+        // 仅当开头是符号、且字符串里还有其它运算符时才剥离，
+        // 否则 "5" 或 "-" 这种交给 toDouble 处理
+        bool hasOp = false;
+        for (int i = 1; i < s.size(); ++i) {
+            QChar c = s.at(i);
+            if (c == QLatin1Char('+') || c == QLatin1Char('-') ||
+                c == QLatin1Char('*') || c == QLatin1Char('/')) {
+                hasOp = true;
+                break;
+            }
         }
-        return value;
+        if (!hasOp)
+            break;
+
+        if (s.at(0) == QLatin1Char('-'))
+            negative = !negative;
+        s = s.mid(1);
     }
 
-    if (str.indexOf("*") != -1)
-    {
-        int i = str.indexOf("*");
-        return calculate(str.left(i))*calculate(str.right(str.length() - 1 - i));
+    // + ：首次出现拆分，右侧递归
+    int idx = s.indexOf('+');
+    if (idx > 0) {
+        double v = calculate(s.left(idx)) + calculate(s.mid(idx + 1));
+        return negative ? -v : v;
     }
 
-    if (str.indexOf("/") != -1)
-    {
-        QStringList list = str.split('/');
-        double value = calculate(list[0]);
+    // - ：全部拆分，保证左结合 (2-3-4 => 2-3-4 而非 2-(3-4))
+    idx = s.indexOf('-');
+    if (idx > 0) {
+        const QStringList list = s.split('-');
+        double v = calculate(list[0]);
         for (int i = 1; i < list.count(); ++i)
-        {
-            value /= calculate(list[i]);
-        }
-        return value;
+            v -= calculate(list[i]);
+        return negative ? -v : v;
     }
 
-    return str.toDouble();
+    // * ：全部拆分
+    idx = s.indexOf('*');
+    if (idx > 0) {
+        const QStringList list = s.split('*');
+        double v = calculate(list[0]);
+        for (int i = 1; i < list.count(); ++i)
+            v *= calculate(list[i]);
+        return negative ? -v : v;
+    }
+
+    // / ：全部拆分，检查除零
+    idx = s.indexOf('/');
+    if (idx > 0) {
+        const QStringList list = s.split('/');
+        double v = calculate(list[0]);
+        for (int i = 1; i < list.count(); ++i) {
+            double d = calculate(list[i]);
+            if (d == 0.0)
+                return qQNaN();          // 除零返回 NaN，由调用方判断
+            v /= d;
+        }
+        return negative ? -v : v;
+    }
+
+    // 纯数字
+    bool ok = false;
+    double val = s.toDouble(&ok);
+    if (!ok)
+        return qQNaN();                  // 非法表达式
+    return negative ? -val : val;
 }
 
-
+// 把结果格式化成字符串：整数不带小数点，最多保留 12 位有效数字
+static QString formatResult(double v)
+{
+    if (qIsNaN(v))
+        return QStringLiteral("Error");
+    if (qIsInf(v))
+        return QStringLiteral("Infinity");
+    // 整数结果直接显示为整数
+    if (v == std::floor(v) && qAbs(v) < 1e15)
+        return QString::number(static_cast<qint64>(v));
+    return QString::number(v, 'g', 12);
+}
 
 Calculator::Calculator(QWidget *parent)
     : QWidget(parent)
@@ -73,91 +112,64 @@ Calculator::Calculator(QWidget *parent)
     // 1. 创建网格布局对象
     QGridLayout *gridLayout = new QGridLayout(this);
 
-    // 2. 设置布局的间距和边距（可选）
+    // 2. 设置布局的间距和边距
     gridLayout->setSpacing(10);
     gridLayout->setContentsMargins(10, 10, 10, 10);
 
-    //添加LineEdit
-    QLineEdit*LE=new QLineEdit();
-    gridLayout->addWidget(LE,0,0,1,4);
+    // 添加显示框
+    QLineEdit *LE = new QLineEdit();
+    LE->setReadOnly(true);
+    LE->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    LE->setStyleSheet("font-size: 22px;");
+    gridLayout->addWidget(LE, 0, 0, 1, 4);
 
-    // create the buttons
+    // 按钮文本，4 列网格
     const QStringList buttonsText = {
-        "7", "8", "9", "-",
+        "7", "8", "9", "/",
         "4", "5", "6", "*",
-        "1", "2", "3", "/",
-        "0", ".", "+", "="
+        "1", "2", "3", "-",
+        "0", ".", "=", "+",
+        "C", "⌫"
     };
 
-    // add the buttons to the layout
-    for (int i = 0; i < 16; ++i) {
+    // 把按钮加入布局并建立信号槽
+    for (int i = 0; i < buttonsText.count(); ++i) {
         QPushButton *button = new QPushButton(buttonsText[i]);
         button->setFixedHeight(40);
-       //  gridLayout->addWidget(button);
-        //‌1 + i / 4 (行索引 row)‌:   i % 4 (列索引 column)‌:   4列网格‌
-        gridLayout->addWidget(button, 1 + i / 4, i % 4);
 
-        #pragma region 按键赋值 {
-            if (buttonsText[i] == "=") {  //  =
-                QObject::connect(button, &QPushButton::clicked, [&] {
-                    QString expression = LE->text();
-                    LE->setText(QString::number(calculate(expression)));
-                });
-            }
-            else if(buttonsText[i] == "+"){  //+
-                QObject::connect(button, &QPushButton::clicked, [&] {
-                   // 记录参数1
-                    bool ok = false;
-                    Du1=LE->text().toDouble(&ok);
-                    // LE->setText(""); //清空
-                    isadd=true;
+        // 前 16 个填 4x4，最后两个(C / ⌫)放在第 5 行，各跨 2 列
+        if (i < 16) {
+            gridLayout->addWidget(button, 1 + i / 4, i % 4);
+        } else {
+            int col = (i - 16) * 2;      // 第 5 行：C 跨 0-1，⌫ 跨 2-3
+            gridLayout->addWidget(button, 5, col, 1, 2);
+        }
 
-                });
-            }
-            else if(buttonsText[i] == "-"){
-            }
-            else if(buttonsText[i] == "*"){
-            }
-            else if(buttonsText[i] == "/"){
-            }
-            else {  //  单个按钮
-                QObject::connect(button, &QPushButton::clicked, [=] {
-                    // append the clicked button's text to the display
-                    LE->setText(LE->text() + button->text());
-                });
-            }
-        #pragma endregion Region_1}
+        const QString &text = buttonsText[i];
 
+        if (text == "=") {
+            QObject::connect(button, &QPushButton::clicked, [LE] {
+                QString expression = LE->text();
+                double result = calculate(expression);
+                LE->setText(formatResult(result));
+            });
+        } else if (text == "C") {
+            QObject::connect(button, &QPushButton::clicked, [LE] {
+                LE->clear();
+            });
+        } else if (text == "⌫") {
+            QObject::connect(button, &QPushButton::clicked, [LE] {
+                LE->setText(LE->text().left(LE->text().length() - 1));
+            });
+        } else {
+            QObject::connect(button, &QPushButton::clicked, [LE, text] {
+                LE->setText(LE->text() + text);
+            });
+        }
     }
 
-
-    /*
-        addWidget 的参数含义：(控件指针, 行索引, 列索引, 行跨度, 列跨度)。
-        0, 0：表示控件放置在第 0 行、第 0 列。
-        1, 4：表示该控件占据 ‌1 行‌ 和 ‌4 列‌ 的空间。
-    */
-
-
-    // 如果你还没有在 UI 设计器中放置控件，可以动态创建并添加
-    // QPushButton *btn1 = new QPushButton("1", this);
-    // QPushButton *btn2 = new QPushButton("2", this);
-    // QPushButton *btn3 = new QPushButton("3", this);
-    // QPushButton *btnPlus = new QPushButton("+", this);
-
-    // gridLayout->addWidget(btn1, 1, 0);
-    // gridLayout->addWidget(btn2, 1, 1);
-    // gridLayout->addWidget(btn3, 2, 0);
-    // gridLayout->addWidget(btnPlus, 2, 1);
-
     this->setLayout(gridLayout);
-
 }
-
-
-//  QString Calculator::calculate(QString str){
-//      return str;
-// }
-
 
 Calculator::~Calculator()
 {

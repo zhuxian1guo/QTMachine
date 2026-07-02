@@ -2,6 +2,7 @@
 #include "lottery.h"
 #include "mainwindow.h"
 #include "countdown.h"
+#include "Form6_Draw.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -18,6 +19,9 @@ int main(int argc, char *argv[])
 
     Calculator s2;  //计算器
     s2.show();
+
+    Form6_Draw f6;
+    f6.show();
 
     return a.exec();
 }

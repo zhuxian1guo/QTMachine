@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     calculator.cpp \
     countdown.cpp \
+    form6_draw.cpp \
     lottery.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
 HEADERS += \
     calculator.h \
     countdown.h \
+    form6_draw.h \
     lottery.h \
     mainwindow.h \
     testextern.h \
@@ -28,6 +30,7 @@ HEADERS += \
 FORMS += \
     calculator.ui \
     countdown.ui \
+    form6_draw.ui \
     lottery.ui \
     mainwindow.ui \
     vip_mgr.ui
