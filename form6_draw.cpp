@@ -1,7 +1,8 @@
 #include "form6_draw.h"
 #include "ui_form6_draw.h"
-#include  "QMouseEvent"
-#include "QPainter"
+#include <QPainter>
+#include <QPen>
+#include <QRect>
 
 Form6_Draw::Form6_Draw(QWidget *parent)
     : QWidget(parent)
@@ -19,38 +20,42 @@ Form6_Draw::~Form6_Draw()
 }
 
 
+void Form6_Draw::drawLineTo(const QPoint &endPoint)
+{
+    QPainter pp(&pix);    // draw the new segment straight onto the backing pixmap
+    pp.setRenderHint(QPainter::Antialiasing);
+    pp.setPen(QPen(Qt::black, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    pp.drawLine(lastPoint, endPoint);
+
+    // repaint only the region that actually changed
+    const int rad = pp.pen().width() / 2 + 2;
+    update(QRect(lastPoint, endPoint).normalized().adjusted(-rad, -rad, +rad, +rad));
+
+    lastPoint = endPoint;
+}
+
 void Form6_Draw::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton) // mouse left down
+    if (event->button() == Qt::LeftButton)   // mouse left down
         lastPoint = event->pos();
 }
 
 void Form6_Draw::mouseMoveEvent(QMouseEvent *event)
 {
-    if (event->buttons()&Qt::LeftButton) // mouse left down and move
-    {
-        endPoint = event->pos();
-        update(); // trigger painter function
-    }
+    if (event->buttons() & Qt::LeftButton)   // mouse left down and move
+        drawLineTo(event->pos());
 }
 
 void Form6_Draw::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton) //mouse left release
-    {
-        endPoint = event->pos();
-        update();
-    }
+    if (event->button() == Qt::LeftButton)   // mouse left release: close the stroke (or a dot on a click)
+        drawLineTo(event->pos());
 }
 
 
-void Form6_Draw::paintEvent(QPaintEvent *)
+void Form6_Draw::paintEvent(QPaintEvent *event)
 {
-    QPainter pp(&pix);    // pix is the QPixmap
-    pp.setPen(QPen(QBrush(Qt::black), 3, Qt::SolidLine)); // set width
-    pp.drawLine(lastPoint, endPoint);    // paint line now
-
-    lastPoint = endPoint;
+    // paintEvent must only display the backing pixmap — never draw into it.
     QPainter painter(this);
-    painter.drawPixmap(0, 0, pix);
+    painter.drawPixmap(event->rect(), pix, event->rect());
 }

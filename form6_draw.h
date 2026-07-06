@@ -2,6 +2,10 @@
 #define FORM6_DRAW_H
 
 #include <QWidget>
+#include <QMouseEvent>
+#include <QPixmap>
+#include  <QPoint>
+
 
 namespace Ui {
 class Form6_Draw;
@@ -17,9 +21,9 @@ public:
 
     QPixmap pix;
     QPoint lastPoint;
-    QPoint endPoint;
 
 private:
+    void drawLineTo(const QPoint &endPoint);
     Ui::Form6_Draw *ui;
 
 protected:
