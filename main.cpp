@@ -5,6 +5,7 @@
 #include "Form6_Draw.h"
 #include "vip_mgr.h"
 #include "form8_opencv.h"
+#include  "form9_serialiodesign.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -28,8 +29,11 @@ int main(int argc, char *argv[])
     // VIP_Mgr f7;  // vip 管理软件  增删改查
     //  f7.show();
 
-    Form8_Opencv f8;
-    f8.show();
+    // Form8_Opencv f8;  //opencv
+    // f8.show();
+
+    Form9_serialIODesign f9;
+    f9.show();
 
     return a.exec();
 }

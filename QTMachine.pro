@@ -13,6 +13,7 @@ SOURCES += \
     countdown.cpp \
     form6_draw.cpp \
     form8_opencv.cpp \
+    form9_serialiodesign.cpp \
     lottery.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -24,6 +25,7 @@ HEADERS += \
     countdown.h \
     form6_draw.h \
     form8_opencv.h \
+    form9_serialiodesign.h \
     lottery.h \
     mainwindow.h \
     testextern.h \
@@ -34,6 +36,7 @@ FORMS += \
     countdown.ui \
     form6_draw.ui \
     form8_opencv.ui \
+    form9_serialiodesign.ui \
     lottery.ui \
     mainwindow.ui \
     vip_mgr.ui
