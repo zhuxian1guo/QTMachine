@@ -4,6 +4,7 @@
 #include "countdown.h"
 #include "Form6_Draw.h"
 #include "vip_mgr.h"
+#include "form8_opencv.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -24,8 +25,11 @@ int main(int argc, char *argv[])
     // Form6_Draw f6; //绘图软件 eventDraw
     // f6.show();
 
-    VIP_Mgr f7;  // vip 管理软件  增删改查
-     f7.show();
+    // VIP_Mgr f7;  // vip 管理软件  增删改查
+    //  f7.show();
+
+    Form8_Opencv f8;
+    f8.show();
 
     return a.exec();
 }
