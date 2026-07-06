@@ -50,6 +50,7 @@ void Form6_Draw::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)   // mouse left release: close the stroke (or a dot on a click)
         drawLineTo(event->pos());
+         qDebug()<<"6666";
 }
 
 
