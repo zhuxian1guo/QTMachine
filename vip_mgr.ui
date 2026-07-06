@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>Operation</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>

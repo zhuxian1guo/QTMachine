@@ -1,10 +1,12 @@
+/*倒计时  +  配置文件读取*/
 #include "countdown.h"
-#include "ui_countdown.h"
-#include <qDebug>
-#include <QMessageBox>
-#include <QTimer>
-#include <QButtonGroup>
-
+ #include "ui_countdown.h"
+ #include <qDebug>
+ #include <QMessageBox>
+ #include <QTimer>
+ #include <QButtonGroup>
+ #include <QSettings>
+ #include <QCoreApplication>
 
 
 
@@ -14,7 +16,18 @@ countdown::countdown(QWidget *parent)
 {
     ui->setupUi(this);
 
-    total=1800;
+    // set total value
+    QString filePath =QCoreApplication::applicationDirPath() + "./config.ini";                          // 配置文件路径（相对于程序运行目录）
+    qDebug()<<filePath;
+    QSettings settings(filePath, QSettings::IniFormat);         // 以 INI 格式打开该配置文件
+
+    // 读取 [basic_config] 段下的 time_expiration 键；
+    // 第二个参数 1800 是默认值——键不存在或文件没找到时返回它；最后 toInt() 转成整型
+    total = settings.value("basic_config/time_expiration", 1800).toInt();
+    qDebug()<<total;
+
+
+    //total=1800;
 
     // 1. 创建 QTimer 对象
     timer = new QTimer(this); // this 为父对象，确保内存自动管理
