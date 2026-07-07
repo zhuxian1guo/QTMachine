@@ -13,7 +13,15 @@
   <property name="windowTitle">
    <string>QtWidgetsApplication</string>
   </property>
-  <widget class="QWidget" name="centralWidget">
+  <widget class="QWidget" name="centralWidget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>528</height>
+    </rect>
+   </property>
    <widget class="QComboBox" name="comboBox">
     <property name="geometry">
      <rect>
@@ -328,11 +336,6 @@
     </widget>
    </widget>
    <zorder>groupBox</zorder>
-   <zorder>label</zorder>
-   <zorder>label_2</zorder>
-   <zorder>label_3</zorder>
-   <zorder>label_4</zorder>
-   <zorder>label_5</zorder>
    <zorder>comboBox</zorder>
    <zorder>comboBox_2</zorder>
    <zorder>comboBox_3</zorder>
@@ -356,7 +359,6 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
- </resources>
+ <resources/>
  <connections/>
 </ui>
