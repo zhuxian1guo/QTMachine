@@ -14,6 +14,7 @@ SOURCES += \
     form10_dlldev.cpp \
     form11_client.cpp \
     form11_server.cpp \
+    form12_textedit.cpp \
     form6_draw.cpp \
     form8_opencv.cpp \
     form9_serialiodesign.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     form10_dlldev.h \
     form11_client.h \
     form11_server.h \
+    form12_textedit.h \
     form6_draw.h \
     form8_opencv.h \
     form9_serialiodesign.h \
@@ -43,6 +45,7 @@ FORMS += \
     form10_dlldev.ui \
     form11_client.ui \
     form11_server.ui \
+    form12_textedit.ui \
     form6_draw.ui \
     form8_opencv.ui \
     form9_serialiodesign.ui \

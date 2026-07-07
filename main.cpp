@@ -10,6 +10,7 @@
 #include <QApplication>
 #include "form11_client.h"
 #include    "form11_server.h"
+#include "form12_textedit.h"
 
 int main(int argc, char *argv[])
 {
@@ -35,17 +36,20 @@ int main(int argc, char *argv[])
     // Form8_Opencv f8;  //opencv
     // f8.show();
 
-    // Form9_serialIODesign f9;
+    // Form9_serialIODesign f9;  //串口调试界面
     // f9.show();
 
-    // form10_dllDev f10;
+    // form10_dllDev f10;  //DLL 引用与打包
     // f10.show();
 
-    Form11_Server f11_0;
-    f11_0.show();
+    // Form11_Server f11_0;  //服务端
+    // f11_0.show();
 
-    Form11_Client f11_1;
-    f11_1.show();
+    // Form11_Client f11_1; // 客户端
+    // f11_1.show();
+
+    Form12_TextEdit f12;
+    f12 .show();
 
     return a.exec();
 }
