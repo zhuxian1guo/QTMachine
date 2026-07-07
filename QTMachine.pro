@@ -15,6 +15,7 @@ PRECOMPILED_HEADER = stable.h
 
 SOURCES += \
     calculator.cpp \
+    canvaswidget.cpp \
     countdown.cpp \
     form10_dlldev.cpp \
     form11_client.cpp \
@@ -33,6 +34,7 @@ SOURCES += \
 
 HEADERS += \
     calculator.h \
+    canvaswidget.h \
     countdown.h \
     form10_dlldev.h \
     form11_client.h \

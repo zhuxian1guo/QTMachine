@@ -11,9 +11,141 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>画板</string>
   </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QMenuBar" name="menuBar">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <widget class="QMenu" name="menuFile">
+      <property name="title">
+       <string>文件</string>
+      </property>
+      <addaction name="actionClear"/>
+      <addaction name="actionSave"/>
+      <addaction name="separator"/>
+      <addaction name="actionExit"/>
+     </widget>
+     <widget class="QMenu" name="menuEdit">
+      <property name="title">
+       <string>编辑</string>
+      </property>
+      <addaction name="actionPenColor"/>
+      <addaction name="actionPenWidth"/>
+     </widget>
+     <widget class="QMenu" name="menuView">
+      <property name="title">
+       <string>视图</string>
+      </property>
+     </widget>
+     <addaction name="menuFile"/>
+     <addaction name="menuEdit"/>
+     <addaction name="menuView"/>
+    </widget>
+   </item>
+   <item>
+    <widget class="QToolBar" name="mainToolBar">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="windowTitle">
+      <string>工具栏</string>
+     </property>
+     <addaction name="actionClear"/>
+     <addaction name="actionSave"/>
+     <addaction name="separator"/>
+     <addaction name="actionPenColor"/>
+     <addaction name="actionPenWidth"/>
+     <addaction name="actionLine"/>
+     <addaction name="actionRec"/>
+     <addaction name="actionCircle"/>
+    </widget>
+   </item>
+   <item>
+    <widget class="CanvasWidget" name="canvasWidget" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>1</width>
+       <height>1</height>
+      </size>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+  <action name="actionClear">
+   <property name="text">
+    <string>清空画布</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>保存图片</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>退出</string>
+   </property>
+  </action>
+  <action name="actionPenColor">
+   <property name="text">
+    <string>画笔颜色</string>
+   </property>
+  </action>
+  <action name="actionPenWidth">
+   <property name="text">
+    <string>画笔粗细</string>
+   </property>
+  </action>
+  <action name="actionLine">
+   <property name="text">
+    <string>线</string>
+   </property>
+  </action>
+  <action name="actionRec">
+   <property name="text">
+    <string>矩形</string>
+   </property>
+  </action>
+  <action name="actionCircle">
+   <property name="text">
+    <string>圆形</string>
+   </property>
+  </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CanvasWidget</class>
+   <extends>QWidget</extends>
+   <header>canvaswidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

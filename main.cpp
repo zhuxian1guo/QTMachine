@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
     // Calculator s2;  //计算器
     // s2.show();
 
-    // Form6_Draw f6; //绘图软件 eventDraw
-    // f6.show();
+    Form6_Draw f6; //绘图软件 eventDraw
+    f6.show();
 
     // VIP_Mgr f7;  // vip 管理软件  增删改查
     //  f7.show();
@@ -63,8 +63,8 @@ int main(int argc, char *argv[])
     // Form13_LogType f13;
     // f13.show();
 
-    Form14_VIPConsum f14;
-    f14.show();
+    // Form14_VIPConsum f14;
+    // f14.show();
 
     return a.exec();
 }
