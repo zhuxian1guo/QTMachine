@@ -12,10 +12,17 @@
 #include    "form11_server.h"
 #include "form12_textedit.h"
 #include "form13_logtype.h"
+#include "common.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    // 初始化全局日志(之后任何地方可调 customLog)
+    customLogInit();
+    QObject::connect(&a, &QApplication::aboutToQuit, [](){ customLogClose(); });
+    customLog("Application started");
+
     // MainWindow w;
     // w.show();
 

@@ -41,8 +41,19 @@
 
 
 // ============================================================
-// 4. 全局工具函数声明(定义放某 cpp,如 form13_logtype.cpp)
+// 4. 全局工具函数声明(定义放 form13_logtype.cpp)
 // ============================================================
-// void customLog(const char* format, ...);
+// 自定义 printf 风格日志,写入 selfLog.log(工作目录)。
+// 线程安全(内部加锁)。
+// 使用前必须先调 customLogInit() 打开文件;程序结束调 customLogClose()。
+void customLog(const char* format, ...);
+
+// 打开日志文件 selfLog.log(追加模式)。成功返回 true。
+// 应在 main() 开头调用一次,之后任何线程/文件均可调 customLog。
+bool customLogInit();
+
+// 关闭日志文件。可在 main() 结束前调用。
+// 不调用也行——进程退出时由系统回收,但建议显式关闭以刷新缓冲。
+void customLogClose();
 
 #endif // COMMON_H

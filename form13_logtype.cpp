@@ -1,5 +1,6 @@
 #include "form13_logtype.h"
 #include "ui_form13_logtype.h"
+#include "common.h"
 #include <QFile>
 #include <QDateTime>
 #include <QTextStream>
@@ -15,31 +16,24 @@ static FILE* selfLogFile = nullptr;
 // 多线程安全(如果确定单线程,可删)
 static QMutex logMutex;
 
-// 前向声明(放头文件也行)
-void customLog(const char* format, ...);
-
 Form13_LogType::Form13_LogType(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Form13_LogType)
 {
     ui->setupUi(this);
 
-    selfLogFile = fopen("selfLog.log", "a");   // 不要重新声明 FILE*
-    if (selfLogFile == nullptr) {
-        return;                                 // 构造函数只能 return;
-    }
+    // 日志文件已由 customLogInit() 在 main() 中打开,这里只做示例输出。
+    // 若担心未初始化,可解除下面两行(会安全忽略重复打开)。
+    // customLogInit();
     for (int i = 0; i < 5; ++i) {
         customLog("Debug: Iteration %d", i);
     }
-    // 不要在这里 fclose,留给析构函数
 }
 
 Form13_LogType::~Form13_LogType()
 {
-    if (selfLogFile) {
-        fclose(selfLogFile);
-        selfLogFile = nullptr;
-    }
+    // 不在这里关闭日志文件——文件生命周期归整个程序所有,
+    // 由 customLogClose() / 进程退出负责关闭。
     delete ui;
 }
 
@@ -83,6 +77,26 @@ void customMessageHandler(QtMsgType type, const QMessageLogContext& context, con
     }
 }
 
+
+// 打开日志文件(追加模式)。重复调用安全——已打开则忽略,直接返回 true。
+bool customLogInit()
+{
+    if (selfLogFile != nullptr) {
+        return true;   // 已打开,避免重复打开造成句柄泄漏
+    }
+    selfLogFile = fopen("selfLog.log", "a");
+    return selfLogFile != nullptr;
+}
+
+// 关闭日志文件。重复调用安全——未打开则跳过。
+void customLogClose()
+{
+    if (selfLogFile != nullptr) {
+        fflush(selfLogFile);
+        fclose(selfLogFile);
+        selfLogFile = nullptr;
+    }
+}
 
 //自定义函数
 void customLog(const char* format, ...)
