@@ -12,6 +12,7 @@
 #include    "form11_server.h"
 #include "form12_textedit.h"
 #include "form13_logtype.h"
+#include "form14_vipconsum.h"
 #include "common.h"
 
 int main(int argc, char *argv[])
@@ -59,8 +60,11 @@ int main(int argc, char *argv[])
     // Form12_TextEdit f12;
     // f12 .show();
 
-    Form13_LogType f13;
-    f13.show();
+    // Form13_LogType f13;
+    // f13.show();
+
+    Form14_VIPConsum f14;
+    f14.show();
 
     return a.exec();
 }
