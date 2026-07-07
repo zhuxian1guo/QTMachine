@@ -11,6 +11,9 @@ CONFIG += c++17
 SOURCES += \
     calculator.cpp \
     countdown.cpp \
+    form10_dlldev.cpp \
+    form11_client.cpp \
+    form11_server.cpp \
     form6_draw.cpp \
     form8_opencv.cpp \
     form9_serialiodesign.cpp \
@@ -23,6 +26,9 @@ SOURCES += \
 HEADERS += \
     calculator.h \
     countdown.h \
+    form10_dlldev.h \
+    form11_client.h \
+    form11_server.h \
     form6_draw.h \
     form8_opencv.h \
     form9_serialiodesign.h \
@@ -34,6 +40,9 @@ HEADERS += \
 FORMS += \
     calculator.ui \
     countdown.ui \
+    form10_dlldev.ui \
+    form11_client.ui \
+    form11_server.ui \
     form6_draw.ui \
     form8_opencv.ui \
     form9_serialiodesign.ui \
@@ -45,6 +54,13 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+
+#头文件路径包含
+INCLUDEPATH += "D:/WorkSpace/Study/QT/QTGit/QTMachine/DLLDev/include"
+LIBS += -L"D:/WorkSpace/Study/QT/QTGit/QTMachine/DLLDev/lib" -lDLLDev
+
+
 
 # ---- OpenCV 配置（仅 MSVC 套件下生效；MinGW 套件会忽略）----
 # 用 Qt 5.15.2 msvc2019_64 套件构建；OpenCV 用官方 Windows 预编译包（x64/vc16 = VS2019）
