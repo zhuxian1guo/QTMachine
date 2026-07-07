@@ -8,7 +8,9 @@ form6\_draw  绘图软件
 
 Form8\_Opencv  opencv
 
-Form11         /\*菜单栏 工具栏 状态栏\*/
+Form12        /\*菜单栏 工具栏 状态栏\*/
 
-Form13         /\*菜单栏 工具栏 状态栏\*/
+Form13         /\*日志调试  全局变量 全局类  全局方法调用\*/
+
+Form14         /\*添加  TableWidget \*/
 
