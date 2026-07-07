@@ -23,6 +23,7 @@ SOURCES += \
     form12_textedit.cpp \
     form13_logtype.cpp \
     form14_vipconsum.cpp \
+    form15_animation.cpp \
     form6_draw.cpp \
     form8_opencv.cpp \
     form9_serialiodesign.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     form12_textedit.h \
     form13_logtype.h \
     form14_vipconsum.h \
+    form15_animation.h \
     form6_draw.h \
     form8_opencv.h \
     form9_serialiodesign.h \
@@ -60,6 +62,7 @@ FORMS += \
     form12_textedit.ui \
     form13_logtype.ui \
     form14_vipconsum.ui \
+    form15_animation.ui \
     form6_draw.ui \
     form8_opencv.ui \
     form9_serialiodesign.ui \
