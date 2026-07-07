@@ -11,6 +11,7 @@
 #include "form11_client.h"
 #include    "form11_server.h"
 #include "form12_textedit.h"
+#include "form13_logtype.h"
 
 int main(int argc, char *argv[])
 {
@@ -48,8 +49,11 @@ int main(int argc, char *argv[])
     // Form11_Client f11_1; // 客户端
     // f11_1.show();
 
-    Form12_TextEdit f12;
-    f12 .show();
+    // Form12_TextEdit f12;
+    // f12 .show();
+
+    Form13_LogType f13;
+    f13.show();
 
     return a.exec();
 }

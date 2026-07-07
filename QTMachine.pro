@@ -4,6 +4,11 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
+# 预编译头(PCH):编译稳定头一次,后续每个 cpp 复用,加速编译
+# 注意:stable.h 不要加到下面 HEADERS 里,qmake 会自动处理
+CONFIG += precompile_header
+PRECOMPILED_HEADER = stable.h
+
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
@@ -15,6 +20,7 @@ SOURCES += \
     form11_client.cpp \
     form11_server.cpp \
     form12_textedit.cpp \
+    form13_logtype.cpp \
     form6_draw.cpp \
     form8_opencv.cpp \
     form9_serialiodesign.cpp \
@@ -31,13 +37,15 @@ HEADERS += \
     form11_client.h \
     form11_server.h \
     form12_textedit.h \
+    form13_logtype.h \
     form6_draw.h \
     form8_opencv.h \
     form9_serialiodesign.h \
     lottery.h \
     mainwindow.h \
     testextern.h \
-    vip_mgr.h
+    vip_mgr.h \
+    common.h
 
 FORMS += \
     calculator.ui \
@@ -46,6 +54,7 @@ FORMS += \
     form11_client.ui \
     form11_server.ui \
     form12_textedit.ui \
+    form13_logtype.ui \
     form6_draw.ui \
     form8_opencv.ui \
     form9_serialiodesign.ui \
